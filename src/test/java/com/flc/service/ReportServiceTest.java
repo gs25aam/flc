@@ -1,5 +1,6 @@
 package com.flc.service;
 
+import com.flc.bootstrap.ApplicationFactory;
 import com.flc.domain.ExerciseType;
 import com.flc.domain.LessonSlot;
 import com.flc.service.dto.LessonReportEntry;
@@ -16,6 +17,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ReportServiceTest {
+    @Test
+    void seededMonthlyLessonReportIncludesAllMayLessonsAndUnratedEntries() {
+        MonthlyLessonReport report = new ApplicationFactory().create().facade().getMonthlyLessonReport(Month.MAY);
+
+        assertEquals(24, report.entries().size());
+        assertTrue(report.entries().stream().anyMatch(entry -> entry.averageRating() == null));
+    }
+
     @Test
     void monthlyLessonReportCountsOnlyAttendedBookings() {
         ServiceTestContext context = new ServiceTestContext();
