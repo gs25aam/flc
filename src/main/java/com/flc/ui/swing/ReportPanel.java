@@ -5,6 +5,7 @@ import com.flc.service.FlcFacade;
 import com.flc.service.dto.LessonReportEntry;
 import com.flc.service.dto.MonthlyChampionReport;
 import com.flc.service.dto.MonthlyLessonReport;
+import com.flc.ui.UiErrorHandler;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -65,7 +66,7 @@ public final class ReportPanel extends JPanel {
             }
             outputArea.setText(builder.toString());
         } catch (RuntimeException exception) {
-            outputArea.setText("Action failed: " + exception.getMessage());
+            outputArea.setText(UiErrorHandler.messageFor(exception));
         }
     }
 
@@ -91,7 +92,7 @@ public final class ReportPanel extends JPanel {
             }
             outputArea.setText(builder.toString());
         } catch (RuntimeException exception) {
-            outputArea.setText("Action failed: " + exception.getMessage());
+            outputArea.setText(UiErrorHandler.messageFor(exception));
         }
     }
 }

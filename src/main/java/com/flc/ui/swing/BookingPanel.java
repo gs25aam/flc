@@ -2,6 +2,7 @@ package com.flc.ui.swing;
 
 import com.flc.service.FlcFacade;
 import com.flc.service.dto.BookingSummary;
+import com.flc.ui.UiErrorHandler;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -69,7 +70,7 @@ public final class BookingPanel extends JPanel {
             BookingSummary summary = facade.bookLesson(memberIdField.getText().trim(), lessonIdField.getText().trim());
             renderSummary("Booking created", summary);
         } catch (RuntimeException exception) {
-            outputArea.setText("Action failed: " + exception.getMessage());
+            outputArea.setText(UiErrorHandler.messageFor(exception));
         }
     }
 
@@ -78,7 +79,7 @@ public final class BookingPanel extends JPanel {
             BookingSummary summary = facade.changeBooking(bookingIdField.getText().trim(), newLessonIdField.getText().trim());
             renderSummary("Booking changed", summary);
         } catch (RuntimeException exception) {
-            outputArea.setText("Action failed: " + exception.getMessage());
+            outputArea.setText(UiErrorHandler.messageFor(exception));
         }
     }
 
@@ -87,7 +88,7 @@ public final class BookingPanel extends JPanel {
             BookingSummary summary = facade.cancelBooking(bookingIdField.getText().trim());
             renderSummary("Booking cancelled", summary);
         } catch (RuntimeException exception) {
-            outputArea.setText("Action failed: " + exception.getMessage());
+            outputArea.setText(UiErrorHandler.messageFor(exception));
         }
     }
 
@@ -97,7 +98,7 @@ public final class BookingPanel extends JPanel {
             BookingSummary summary = facade.attendBooking(bookingIdField.getText().trim(), rating, reviewField.getText());
             renderSummary("Lesson attended", summary);
         } catch (RuntimeException exception) {
-            outputArea.setText("Action failed: " + exception.getMessage());
+            outputArea.setText(UiErrorHandler.messageFor(exception));
         }
     }
 
@@ -121,7 +122,7 @@ public final class BookingPanel extends JPanel {
             }
             outputArea.setText(builder.toString());
         } catch (RuntimeException exception) {
-            outputArea.setText("Action failed: " + exception.getMessage());
+            outputArea.setText(UiErrorHandler.messageFor(exception));
         }
     }
 

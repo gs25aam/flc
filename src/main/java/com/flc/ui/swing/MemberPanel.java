@@ -2,6 +2,7 @@ package com.flc.ui.swing;
 
 import com.flc.domain.Member;
 import com.flc.service.FlcFacade;
+import com.flc.ui.UiErrorHandler;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -48,7 +49,7 @@ public final class MemberPanel extends JPanel {
             memberNameField.setText("");
             refreshMembers();
         } catch (RuntimeException exception) {
-            outputArea.setText("Action failed: " + exception.getMessage());
+            outputArea.setText(UiErrorHandler.messageFor(exception));
         }
     }
 

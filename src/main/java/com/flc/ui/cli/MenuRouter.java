@@ -8,6 +8,7 @@ import com.flc.service.dto.BookingSummary;
 import com.flc.service.dto.LessonReportEntry;
 import com.flc.service.dto.MonthlyChampionReport;
 import com.flc.service.dto.MonthlyLessonReport;
+import com.flc.ui.UiErrorHandler;
 
 import java.io.PrintStream;
 import java.time.DayOfWeek;
@@ -46,7 +47,7 @@ public final class MenuRouter {
                 }
             };
         } catch (RuntimeException exception) {
-            out.println("Action failed: " + exception.getMessage());
+            out.println(UiErrorHandler.messageFor(exception));
             return true;
         }
     }
