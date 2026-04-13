@@ -1,13 +1,19 @@
 package com.flc.domain;
 
+import com.flc.exception.BookingStateException;
+
 public final class Booking {
     private final String id;
     private final String memberId;
-    private String lessonId;
-    private BookingStatus status;
-    private LessonFeedback feedback;
+    private final String lessonId;
+    private final BookingStatus status;
+    private final LessonFeedback feedback;
 
     public Booking(String id, String memberId, String lessonId, BookingStatus status) {
+        this(id, memberId, lessonId, status, null);
+    }
+
+    private Booking(String id, String memberId, String lessonId, BookingStatus status, LessonFeedback feedback) {
         if (id == null || id.isBlank()) {
             throw new IllegalArgumentException("Booking id must not be blank.");
         }
@@ -20,10 +26,17 @@ public final class Booking {
         if (status == null) {
             throw new IllegalArgumentException("Booking status must not be null.");
         }
+        if (status == BookingStatus.ATTENDED && feedback == null) {
+            throw new IllegalArgumentException("Attended bookings must include lesson feedback.");
+        }
+        if (status != BookingStatus.ATTENDED && feedback != null) {
+            throw new IllegalArgumentException("Only attended bookings can include lesson feedback.");
+        }
         this.id = id;
         this.memberId = memberId;
         this.lessonId = lessonId;
         this.status = status;
+        this.feedback = feedback;
     }
 
     public String id() {
@@ -46,18 +59,27 @@ public final class Booking {
         return feedback;
     }
 
-    public void changeLesson(String newLessonId) {
-        this.lessonId = newLessonId;
-        this.status = BookingStatus.CHANGED;
-        this.feedback = null;
+    public Booking changeLesson(String newLessonId) {
+        ensureCanBeUpdated("changed");
+        return new Booking(id, memberId, newLessonId, BookingStatus.CHANGED, null);
     }
 
-    public void cancel() {
-        this.status = BookingStatus.CANCELLED;
+    public Booking cancel() {
+        ensureCanBeUpdated("cancelled");
+        return new Booking(id, memberId, lessonId, BookingStatus.CANCELLED, null);
     }
 
-    public void attend(LessonFeedback lessonFeedback) {
-        this.feedback = lessonFeedback;
-        this.status = BookingStatus.ATTENDED;
+    public Booking attend(LessonFeedback lessonFeedback) {
+        ensureCanBeUpdated("attended");
+        return new Booking(id, memberId, lessonId, BookingStatus.ATTENDED, lessonFeedback);
+    }
+
+    private void ensureCanBeUpdated(String action) {
+        if (!status.canBeUpdated()) {
+            throw new BookingStateException(
+                    "Booking %s cannot be %s because it is %s."
+                            .formatted(id, action, status)
+            );
+        }
     }
 }

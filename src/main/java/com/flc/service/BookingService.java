@@ -53,15 +53,15 @@ public final class BookingService {
         validateTimeSlotConflict(booking.memberId(), newLesson, booking.id());
         validateCapacity(newLessonId);
 
-        booking.changeLesson(newLessonId);
-        return bookingRepository.save(booking);
+        Booking changedBooking = booking.changeLesson(newLessonId);
+        return bookingRepository.save(changedBooking);
     }
 
     public Booking cancelBooking(String bookingId) {
         Booking booking = getBooking(bookingId);
         ensureMutable(booking, "cancelled");
-        booking.cancel();
-        return bookingRepository.save(booking);
+        Booking cancelledBooking = booking.cancel();
+        return bookingRepository.save(cancelledBooking);
     }
 
     public Booking getBooking(String bookingId) {

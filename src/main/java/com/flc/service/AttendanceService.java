@@ -28,7 +28,7 @@ public final class AttendanceService {
         }
 
         LessonFeedback feedback = new LessonFeedback(rating, review == null ? "" : review.trim());
-        booking.attend(feedback);
-        return bookingRepository.save(booking);
+        Booking attendedBooking = booking.attend(feedback);
+        return bookingRepository.save(attendedBooking);
     }
 }
