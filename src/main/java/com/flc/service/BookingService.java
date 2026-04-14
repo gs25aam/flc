@@ -13,6 +13,8 @@ import com.flc.repository.BookingRepository;
 import java.util.List;
 
 public final class BookingService {
+    private static final String BOOKING_ID_PATTERN = "B\\d+";
+
     private final BookingRepository bookingRepository;
     private final MemberService memberService;
     private final TimetableService timetableService;
@@ -35,7 +37,7 @@ public final class BookingService {
         validateTimeSlotConflict(memberId, lesson, null);
         validateCapacity(lessonId);
 
-        String bookingId = "B%03d".formatted(bookingRepository.findAll().size() + 1);
+        String bookingId = nextBookingId();
         Booking booking = new Booking(bookingId, memberId, lessonId, BookingStatus.BOOKED);
         return bookingRepository.save(booking);
     }
@@ -127,5 +129,21 @@ public final class BookingService {
                             .formatted(booking.id(), action, booking.status())
             );
         }
+    }
+
+    private String nextBookingId() {
+        int nextNumber = bookingRepository.findAll().stream()
+                .map(Booking::id)
+                .mapToInt(this::bookingNumber)
+                .max()
+                .orElse(0) + 1;
+        return "B%03d".formatted(nextNumber);
+    }
+
+    private int bookingNumber(String bookingId) {
+        if (!bookingId.matches(BOOKING_ID_PATTERN)) {
+            return 0;
+        }
+        return Integer.parseInt(bookingId.substring(1));
     }
 }

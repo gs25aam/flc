@@ -30,6 +30,19 @@ class BookingServiceTest {
     }
 
     @Test
+    void bookLessonUsesNextHighestExistingBookingId() {
+        ServiceTestContext context = new ServiceTestContext();
+        context.addMember("M001");
+        context.addMember("M002");
+        context.addLesson("L001", LocalDate.of(2026, 5, 2), LessonSlot.MORNING, ExerciseType.YOGA);
+        context.addBooking("B010", "M001", "L001", BookingStatus.BOOKED);
+
+        Booking booking = context.bookingService().bookLesson("M002", "L001");
+
+        assertEquals("B011", booking.id());
+    }
+
+    @Test
     void bookLessonRejectsWhenCapacityExceeded() {
         ServiceTestContext context = new ServiceTestContext();
         context.addLesson("L001", LocalDate.of(2026, 5, 2), LessonSlot.MORNING, ExerciseType.YOGA);

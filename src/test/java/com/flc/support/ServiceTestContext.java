@@ -1,5 +1,7 @@
 package com.flc.support;
 
+import com.flc.domain.Booking;
+import com.flc.domain.BookingStatus;
 import com.flc.domain.ExerciseType;
 import com.flc.domain.Lesson;
 import com.flc.domain.LessonSlot;
@@ -37,6 +39,11 @@ public final class ServiceTestContext {
     public Lesson addLesson(String id, LocalDate date, LessonSlot slot, ExerciseType type) {
         Lesson lesson = new Lesson(id, date, slot, type);
         return lessonRepository.save(lesson);
+    }
+
+    public Booking addBooking(String id, String memberId, String lessonId, BookingStatus status) {
+        Booking booking = new Booking(id, memberId, lessonId, status);
+        return bookingRepository.save(booking);
     }
 
     public BookingService bookingService() {
