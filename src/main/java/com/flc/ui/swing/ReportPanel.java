@@ -75,7 +75,7 @@ public final class ReportPanel extends JPanel {
             MonthlyChampionReport report = facade.getMonthlyChampionReport((Month) monthBox.getSelectedItem());
             StringBuilder builder = new StringBuilder(report.month().toString()).append(" champion report\n");
             report.incomeByExercise().forEach((type, income) ->
-                    builder.append("- ").append(type.displayName()).append(" | income=£").append(income).append('\n')
+                    builder.append("- ").append(type.displayName()).append(" | income=GBP ").append(income).append('\n')
             );
             if (report.champions().isEmpty()) {
                 builder.append("No champion for this month.\n");
@@ -88,7 +88,7 @@ public final class ReportPanel extends JPanel {
                     }
                     builder.append(type.displayName());
                 }
-                builder.append(" at £").append(report.highestIncome()).append('\n');
+                builder.append(" at GBP ").append(report.highestIncome()).append('\n');
             }
             outputArea.setText(builder.toString());
         } catch (RuntimeException exception) {

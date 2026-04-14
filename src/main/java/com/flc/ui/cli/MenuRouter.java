@@ -156,12 +156,12 @@ public final class MenuRouter {
         MonthlyChampionReport report = facade.getMonthlyChampionReport(month);
         out.println(month + " champion exercise report");
         report.incomeByExercise().forEach((type, income) ->
-                out.printf("- %s | income=£%s%n", type.displayName(), income)
+                out.printf("- %s | income=GBP %s%n", type.displayName(), income)
         );
         if (report.champions().isEmpty()) {
             out.println("No champion for this month because there were no active bookings.");
         } else {
-            out.println("Champion(s): " + joinChampions(report.champions()) + " at £" + report.highestIncome());
+            out.println("Champion(s): " + joinChampions(report.champions()) + " at GBP " + report.highestIncome());
         }
         return true;
     }

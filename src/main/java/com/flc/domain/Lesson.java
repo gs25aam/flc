@@ -39,7 +39,7 @@ public record Lesson(String id, LocalDate date, LessonSlot slot, ExerciseType ex
 
     public String displayLabel() {
         return String.format(
-                "%s | %s | %s | %s | £%s",
+                "%s | %s | %s | %s | GBP %s",
                 id,
                 date,
                 slot.displayName(),
